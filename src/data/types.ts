@@ -59,6 +59,19 @@ export interface Ciudad {
   pctKilos: number;
 }
 
+export interface CanalesData {
+  terrazas: Record<string, (number | null)[]>;
+  comercializadora: Record<string, (number | null)[]>;
+  participacion2026: (number | null)[];
+  meses: string[];
+  totales: {
+    terrazas: Record<string, number>;
+    comercializadora: Record<string, number>;
+    participacion2026: number;
+  };
+  fuente: string;
+}
+
 export interface Dataset {
   meta: { titulo: string; periodo: string; fuente: string };
   cierre: CierreSept;
@@ -66,4 +79,5 @@ export interface Dataset {
   kilos: KilosData;
   ciudades: Ciudad[];
   ciudadesTotales: { pesos: number; kilos: number };
+  canales: CanalesData;
 }

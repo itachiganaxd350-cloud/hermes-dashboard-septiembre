@@ -12,11 +12,12 @@ Dashboard interactivo construido **a partir del archivo oficial** `CIERRE SEPTIE
 | `VARIACION EN PESOS AÑO AÑO ` | **Cuadro verde claro**: Mes → Real 2026 en pesos (sin cumplimiento/variación/proyección) | Variación en Pesos |
 | `VARIACION EN KILOS AÑO AÑO` | **Cuadro completo**: Mes → Proyección 2027 kilos | Variación en Kilos |
 | `CIERRE SEPTIEMBRE CIUDADES` | Tabla completa por ciudad (pesos y kilos) | Ciudades |
+| `canales 2026.xlsx` → `INFORM CANALES` | Terrazas y Comercializadora 2022–2026 + participación 2026 | Canales |
 
 ## ✅ Fidelidad de datos
 
-`src/data/dataset.json` se genera **leyendo el .xls directamente** (script `scripts/build_dataset.py`), sin transcripción manual.
-Verificación independiente posterior: **197 checks contra las celdas del archivo · 0 diferencias**.
+`src/data/dataset.json` se genera **leyendo los archivos originales directamente** (script `scripts/build_dataset.py`), sin transcripción manual.
+Verificación independiente posterior: **342 checks contra las celdas de los archivos · 0 diferencias** (197 del cierre + 145 de canales).
 
 Los valores derivados (YTD Ene–Sep, % de crecimiento, participación por ciudad) se precalculan en Python y también cuadran con los totales del archivo.
 
@@ -24,6 +25,7 @@ Los valores derivados (YTD Ene–Sep, % de crecimiento, participación por ciuda
 
 - Selector de tema claro / oscuro
 - Gráficas con conmutador **Barras / Líneas** y leyendas activables
+- **Canales**: una sola tarjeta con conmutador **Mensual / Comparativo anual / Participación** (+ detalle anual colapsable)
 - Ciudades: conmutador **Pesos / Kilos**, **Top 10 / Todas**, buscador y tabla **ordenable por columna**
 - KPIs con animación de conteo y acentos por color
 - Navegación por secciones (chips) con desplazamiento suave

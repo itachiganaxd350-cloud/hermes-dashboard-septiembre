@@ -60,6 +60,22 @@ export interface CumplimientoRow {
   color: string;
 }
 
+export interface CanalMesRow {
+  mes: string;
+  terrazas2026: number | null;
+  comercial2026: number | null;
+  terrazas2025: number | null;
+  comercial2025: number | null;
+  pct2026: number | null;
+}
+
+export interface CanalAnualRow {
+  year: number;
+  terrazas: number;
+  comercializadora: number;
+  total: number;
+}
+
 export interface DashboardData {
   kpis: Kpi[];
   pesosSeries: MesSerie[];
@@ -67,6 +83,15 @@ export interface DashboardData {
   crecimiento: CrecimientoRow[];
   proyeccion: ProyeccionRow[];
   cumplimientos: CumplimientoRow[];
+  canalMeses: CanalMesRow[];
+  canalAnual: CanalAnualRow[];
+  canalResumen: {
+    terrazas2026: number;
+    comercial2026: number;
+    participacion2026: number;
+    terrazas2025: number;
+    comercial2025: number;
+  };
 }
 
 export function buildDashboard(d: Dataset): DashboardData {
@@ -104,6 +129,30 @@ export function buildDashboard(d: Dataset): DashboardData {
     { nombre: "Presupuesto 1", presupuesto: d.cierre.presupuesto1, cumplimiento: d.cierre.cumplimiento1, color: "#10b981" },
     { nombre: "Presupuesto 2", presupuesto: d.cierre.presupuesto2, cumplimiento: d.cierre.cumplimiento2, color: "#f59e0b" },
   ];
+
+  // --- Canales (archivo canales 2026.xlsx) ---
+  const canalMeses: CanalMesRow[] = d.canales.meses.map((mes, i) => ({
+    mes: mes.length > 3 ? mes.slice(0, 3) : mes,
+    terrazas2026: d.canales.terrazas["2026"][i] ?? null,
+    comercial2026: d.canales.comercializadora["2026"][i] ?? null,
+    terrazas2025: d.canales.terrazas["2025"][i] ?? null,
+    comercial2025: d.canales.comercializadora["2025"][i] ?? null,
+    pct2026: d.canales.participacion2026[i] ?? null,
+  }));
+
+  const canalAnual: CanalAnualRow[] = [2022, 2023, 2024, 2025, 2026].map((y) => {
+    const t = d.canales.totales.terrazas[String(y)] ?? 0;
+    const c = d.canales.totales.comercializadora[String(y)] ?? 0;
+    return { year: y, terrazas: t, comercializadora: c, total: t + c };
+  });
+
+  const canalResumen = {
+    terrazas2026: d.canales.totales.terrazas["2026"] ?? 0,
+    comercial2026: d.canales.totales.comercializadora["2026"] ?? 0,
+    participacion2026: d.canales.totales.participacion2026 ?? 0,
+    terrazas2025: d.canales.totales.terrazas["2025"] ?? 0,
+    comercial2025: d.canales.totales.comercializadora["2025"] ?? 0,
+  };
 
   const kpis: Kpi[] = [
     {
@@ -162,5 +211,5 @@ export function buildDashboard(d: Dataset): DashboardData {
     },
   ];
 
-  return { kpis, pesosSeries, kilosSeries, crecimiento, proyeccion, cumplimientos };
+  return { kpis, pesosSeries, kilosSeries, crecimiento, proyeccion, cumplimientos, canalMeses, canalAnual, canalResumen };
 }

@@ -8,11 +8,13 @@ import {
   Scale,
   MapPin,
   LayoutDashboard,
+  Handshake,
 } from "lucide-react";
 import { KpiCard } from "./KpiCard";
 import { CierreSeptiembre } from "./CierreSeptiembre";
 import { AnalisisPesos } from "./AnalisisPesos";
 import { AnalisisKilos } from "./AnalisisKilos";
+import { Canales } from "./Canales";
 import { Ciudades } from "./Ciudades";
 import { buildDashboard } from "../data/transforms";
 import type { Dataset } from "../data/types";
@@ -72,6 +74,7 @@ export function Dashboard({ data, dark, toggleTheme }: Props) {
     { id: "cierre", label: "Cierre Septiembre", icon: <ClipboardList size={13} /> },
     { id: "pesos", label: "Variación en Pesos", icon: <Coins size={13} /> },
     { id: "kilos", label: "Variación en Kilos", icon: <Scale size={13} /> },
+    { id: "canales", label: "Canales", icon: <Handshake size={13} /> },
     { id: "ciudades", label: "Ciudades", icon: <MapPin size={13} /> },
   ];
 
@@ -166,6 +169,21 @@ export function Dashboard({ data, dark, toggleTheme }: Props) {
           crecimiento={d.crecimiento}
           proyeccion={d.proyeccion}
           totales={data.kilos.totales}
+        />
+      </Section>
+
+      <Section
+        id="canales"
+        icon={<Handshake size={16} />}
+        title="Canales"
+        subtitle="Terrazas vs Comercializadora · comparativo año a año"
+        delay={0.28}
+      >
+        <Canales
+          meses={d.canalMeses}
+          anual={d.canalAnual}
+          resumen={d.canalResumen}
+          fuente={data.canales.fuente}
         />
       </Section>
 
